@@ -1,5 +1,6 @@
 export class http{
     code: number;
-    message: string="你好";
-    data: Array<any>;
+    message: string="成功";
+    dataArray: Array<any>;
+    data:any;
 }

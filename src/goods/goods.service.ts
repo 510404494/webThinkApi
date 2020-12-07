@@ -10,10 +10,13 @@ export class GoodsService {
         @InjectRepository(Goods)
         private readonly userRepository: Repository<Goods>,
     ) { }
-    async findAll() {
+    async findAll() : Promise<any>{
         const res = new http();
         let list = await this.userRepository.find();
-        res.data = list
+        res.data = {
+            list: list
+        }
+        res.code = 200;
         return res;
     }
     async findOne(query): Promise<Goods> {
@@ -21,17 +24,18 @@ export class GoodsService {
         return list;
     }
 
-    async addOne(object:any): Promise<String> {
+    async addOne(object:any): Promise<any> {
         console.log(object);
-        
-        let list = await this.userRepository.insert(object);
-        console.log(list);
-        // if (list) {
-        //     return '新增成功!';
-        // } else {
-        //     return '新增失败!';
-        // }
-        return '新增成功!';
+        const res = new http();
+        let info = await this.userRepository.insert(object);
+        res.code=200;
+        res.data = [];
+        if (info) {
+            res.message = '新增成功!';
+        } else {
+            res.message =  '新增失败!';
+        }
+        return res;
     }
     async updateOne(goods): Promise<String> {
         let list = await this.userRepository.update({ id: goods.id }, goods);
