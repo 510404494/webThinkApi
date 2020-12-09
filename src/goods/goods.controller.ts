@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Query, Body, Res, HttpStatus, ExecutionContext, NestInterceptor} from '@nestjs/common';
 import { GoodsService } from './goods.service';
-import { Goods } from '../database/entity/goods.entity';
+import { Goods } from './goods.entity';
 
 
 
