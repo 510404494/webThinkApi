@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
 import { Goods } from './goods.entity';
 import { http } from 'src/common/http';
+import { Action } from './action.entity';
 
 @Injectable()
 export class GoodsService {
@@ -12,11 +13,19 @@ export class GoodsService {
     ) { }
     async findAll() : Promise<any>{
         const res = new http();
+        res.resultCode = 200;
         let list = await this.userRepository.find();
+        for (let i = 0; i < list.length; i++) {
+            const good:any = list[i];
+            const actionlist = await getConnection()
+                .createQueryBuilder(Action, "action")
+                .getOne();
+            good.restaurant = actionlist;
+            
+        }
         res.data = {
             list: list
         }
-        res.code = 200;
         return res;
     }
     async findOne(query): Promise<Goods> {
